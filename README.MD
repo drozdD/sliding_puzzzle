@@ -1,6 +1,6 @@
 # Simple sliding puzzle
 
-<p style="align:center;">
+<p align="center">
     <img src="imgs/presentation.png">
 </p>
 
