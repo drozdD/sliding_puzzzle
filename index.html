@@ -1,0 +1,413 @@
+http://wklejto.pl/868375
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piętnastka</title>
+    <style>
+        body{
+            background-color: black;
+        }
+        .dupa{
+            width: 150px;
+            height: 150px;
+            position: relative;
+            overflow: hidden;
+            float:left;
+        }
+        #ukladanka img{
+            display: block;
+            position: absolute;
+        }
+        button {
+            font-size: 23px;
+        }
+        #ukladanka{
+            width: 600px;
+            height: 600px;
+            border: 1px solid red;
+            margin:auto;
+        }
+        #licznik{
+            margin: auto;
+            width: 215px;
+            height: auto;
+            padding: 0px;
+        }
+    </style>
+</head>
+<body>
+    <div style="width: 400px; height: 200px; margin:auto; position: relative;">
+        <img onclick = "lewo()" src="imgs/strzalka.png" style="width: 100px; height: 90px; position: absolute; top: 55px; transform: scaleX(-1);">
+        <div id = "fotki" style="width: 200px; height: 200px; margin:auto; overflow: hidden; display: flex;">
+            <img src="imgs/shrek.jpg" style="width: 200px; height: 200px; float: left;">
+            <img src="imgs/prison.jpg" style="width: 200px; height: 200px; float: left;">
+            <img src="imgs/domzpapieru.jpg" style="width: 200px; height: 200px; float: left;">
+            <img src="imgs/shrek.jpg" style="width: 200px; height: 200px; float: left;">
+        </div>
+        <img onclick = "prawo()" src="imgs/strzalka.png" style="width: 100px; height: 90px; position: absolute; top: 55px; left: 300px;">
+    </div>
+    <div style="padding: 20px; text-align: center;">
+        <button onclick="podzial(3)">3 x 3</button>
+        <button onclick="podzial(4)">4 x 4</button>
+        <button onclick="podzial(5)">5 x 5</button>
+        <button onclick="podzial(6)">6 x 6</button>
+    </div>
+    <div id="licznik">
+        <img src="digits/c0.gif">
+        <img src="digits/c0.gif">
+        <img src="digits/colon.gif">
+        <img src="digits/c0.gif">
+        <img src="digits/c0.gif">
+        <img src="digits/colon.gif">
+        <img src="digits/c0.gif">
+        <img src="digits/c0.gif">
+        <img src="digits/dot.gif">
+        <img src="digits/c0.gif">
+        <img src="digits/c0.gif">
+        <img src="digits/c0.gif">
+    </div>
+    <div id = "ukladanka"></div>
+    
+</body>
+<script>
+    window.img_src = "imgs/shrek.jpg"
+    function prawo(){
+        if(document.getElementById("fotki").scrollLeft == 600){document.getElementById("fotki").scrollLeft = 0}
+        now = document.getElementById("fotki").scrollLeft;
+        g = setInterval(function(){
+            if(document.getElementById("fotki").scrollLeft - now < 200){
+                document.getElementById("fotki").scrollLeft = document.getElementById("fotki").scrollLeft + 5;
+            }else{
+                clearInterval(g)
+                if(document.getElementById("fotki").scrollLeft == 0){window.img_src = "imgs/shrek.jpg"}
+                if(document.getElementById("fotki").scrollLeft == 200){window.img_src = "imgs/prison.jpg"}
+                if(document.getElementById("fotki").scrollLeft == 400){window.img_src = "imgs/domzpapieru.jpg"}
+                if(document.getElementById("fotki").scrollLeft == 600){window.img_src = "imgs/shrek.jpg"}
+                }
+        }, 1)
+        
+    }
+    function lewo(){
+        if(document.getElementById("fotki").scrollLeft == 0){document.getElementById("fotki").scrollLeft = 800}
+        now = document.getElementById("fotki").scrollLeft;
+        g = setInterval(function(){
+            if(now - document.getElementById("fotki").scrollLeft < 200){
+                document.getElementById("fotki").scrollLeft = document.getElementById("fotki").scrollLeft - 5;
+            }else{
+                clearInterval(g)
+                if(document.getElementById("fotki").scrollLeft == 0){window.img_src = "imgs/shrek.jpg"}
+                if(document.getElementById("fotki").scrollLeft == 200){window.img_src = "imgs/prison.jpg"}
+                if(document.getElementById("fotki").scrollLeft == 400){window.img_src = "imgs/domzpapieru.jpg"}
+                if(document.getElementById("fotki").scrollLeft == 600){window.img_src = "imgs/shrek.jpg"}
+                }
+        }, 1)
+    }
+    function podzial(n){    
+        window.petla = 0;
+        if(document.getElementById("ukladanka").firstChild){
+            k = document.getElementById("ukladanka").children.length
+            for(i = 0; i < k; i++){
+                document.getElementById("ukladanka").children[0].remove();
+            }
+        }
+        for(i = 0; i <n; i++){
+            for(j = 0; j < n; j++){
+                div = document.createElement("div")
+                div.style.width = 600 / n + "px";
+                div.style.height = 600 / n + "px";
+                div.style.float = "left";
+                div.style.position = "relative"
+                div.style.overflow = "hidden"
+                id = document.createAttribute("id");
+                id.value = (10 * (i+1)) + j + 1;
+                div.setAttributeNode(id)
+                document.getElementById("ukladanka").appendChild(div);  
+                
+                img = document.createElement("img");
+                src = document.createAttribute("src");
+            
+                src.value = window.img_src;
+                    
+                img.setAttributeNode(src)
+                if(div.id == n *10 +n){
+                    img.style.opacity = 0
+                }else{
+                    img.style.opacity = 1;
+                }
+                img.style.top = 600 / n * i * -1 + "px";
+                img.style.left = 600 / n * j * -1 + "px";
+                div.appendChild(img);
+            }
+        }
+        g = 0;
+        setTimeout(mix(n), 10)
+    }
+    id = 0;
+    g = 0;
+    function mix(n){ 
+            if(g == 0){
+                id = n*10 + n;
+                setTimeout(mix, 10)
+                window.n = n;
+            }
+            if(g > 700){
+                addEvents(window.n);
+                pom = 0;
+            }else{
+            los = getRandom(1, 4);
+            if(los == 1 && document.getElementById(id + 1) != undefined){
+                j = document.getElementById(id + 1).firstChild.src
+                t = document.getElementById(id + 1).firstChild.style.top
+                l = document.getElementById(id + 1).firstChild.style.left
+                o = document.getElementById(id + 1).firstChild.style.opacity
+                document.getElementById(id + 1).firstChild.style.opacity = document.getElementById(id).firstChild.style.opacity
+                document.getElementById(id).firstChild.src = j
+                document.getElementById(id).firstChild.style.top = t
+                document.getElementById(id).firstChild.style.left = l
+                document.getElementById(id).firstChild.style.opacity = o;
+                id = id + 1;
+                g ++;
+                setTimeout(mix, 10)
+            }else if(los == 2 && document.getElementById(id + 10) != undefined){
+                j = document.getElementById(id + 10).firstChild.src
+                t = document.getElementById(id + 10).firstChild.style.top
+                l = document.getElementById(id + 10).firstChild.style.left
+                o = document.getElementById(id + 10).firstChild.style.opacity
+                document.getElementById(id + 10).firstChild.style.opacity = document.getElementById(id).firstChild.style.opacity
+                document.getElementById(id).firstChild.src = j
+                document.getElementById(id).firstChild.style.top = t
+                document.getElementById(id).firstChild.style.left = l
+                document.getElementById(id).firstChild.style.opacity = o;
+                id = id + 10;
+                g ++;
+                setTimeout(mix, 10)
+            }else if(los == 3 && document.getElementById(id - 1) != undefined){
+                j = document.getElementById(id - 1).firstChild.src
+                t = document.getElementById(id - 1).firstChild.style.top
+                l = document.getElementById(id - 1).firstChild.style.left
+                o = document.getElementById(id - 1).firstChild.style.opacity
+                document.getElementById(id - 1).firstChild.style.opacity = document.getElementById(id).firstChild.style.opacity
+                document.getElementById(id).firstChild.src = j
+                document.getElementById(id).firstChild.style.top = t
+                document.getElementById(id).firstChild.style.left = l
+                document.getElementById(id).firstChild.style.opacity = o;
+                id = id - 1;
+                g ++;
+                setTimeout(mix, 10)
+            }else if(los == 4 && document.getElementById(id - 10) != undefined){
+                j = document.getElementById(id - 10).firstChild.src
+                t = document.getElementById(id - 10).firstChild.style.top
+                l = document.getElementById(id - 10).firstChild.style.left
+                o = document.getElementById(id - 10).firstChild.style.opacity
+                document.getElementById(id - 10).firstChild.style.opacity = document.getElementById(id).firstChild.style.opacity
+                document.getElementById(id).firstChild.src = j
+                document.getElementById(id).firstChild.style.top = t
+                document.getElementById(id).firstChild.style.left = l
+                document.getElementById(id).firstChild.style.opacity = o;
+                id = id -10;
+                g ++;
+               setTimeout(mix, 10)
+            }else{g++; mix();}
+        }
+    }
+    function addEvents(n){
+        for(i = 1; i < n + 1; i++){
+            for(j = 1; j < n + 1; j++){
+                let id = i * 10 + j;
+                document.getElementById(id).onclick = () => {ruch(id)}
+            }
+        }
+        window.date = new Date().getTime();
+        window.petla = 1;
+        licznik = window.setInterval(time, 1)
+    }
+    function time(){
+    if(window.petla){
+        var now = new Date().getTime();
+        window.distance = now - window.date
+        var hours = Math.floor((window.distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        zmianaLicznika(hours, 0, 0);
+        var minutes = Math.floor((window.distance % (1000 * 60 * 60)) / (1000 * 60));
+        zmianaLicznika(minutes, 3, 0);
+        var seconds = Math.floor((window.distance % (1000 * 60)) / 1000);
+        zmianaLicznika(seconds, 6, 0);
+        var mili = Math.floor((window.distance % 1000));
+        zmianaLicznika(mili, 9, 1);
+        // console.log(hours + ':' + minutes + ':' + seconds + "." + mili)
+    }
+    }
+    function zmianaLicznika(time, pozycja, mili){
+        if(mili){
+            x = Math.floor(time/100)
+            y = Math.floor((time - x * 100)/10);
+            z = time - x * 100 - y
+            if(x == 0){document.getElementById("licznik").children[pozycja].src = "digits/c0.gif"}
+            if(x == 1){document.getElementById("licznik").children[pozycja].src = "digits/c1.gif"}
+            if(x == 2){document.getElementById("licznik").children[pozycja].src = "digits/c2.gif"}
+            if(x == 3){document.getElementById("licznik").children[pozycja].src = "digits/c3.gif"}
+            if(x == 4){document.getElementById("licznik").children[pozycja].src = "digits/c4.gif"}
+            if(x == 5){document.getElementById("licznik").children[pozycja].src = "digits/c5.gif"}
+            if(x == 6){document.getElementById("licznik").children[pozycja].src = "digits/c6.gif"}
+            if(x == 7){document.getElementById("licznik").children[pozycja].src = "digits/c7.gif"}
+            if(x == 8){document.getElementById("licznik").children[pozycja].src = "digits/c8.gif"}
+            if(x == 9){document.getElementById("licznik").children[pozycja].src = "digits/c9.gif"}
+
+            if(y == 0){document.getElementById("licznik").children[pozycja + 1].src = "digits/c0.gif"}
+            if(y == 1){document.getElementById("licznik").children[pozycja + 1].src = "digits/c1.gif"}
+            if(y == 2){document.getElementById("licznik").children[pozycja + 1].src = "digits/c2.gif"}
+            if(y == 3){document.getElementById("licznik").children[pozycja + 1].src = "digits/c3.gif"}
+            if(y == 4){document.getElementById("licznik").children[pozycja + 1].src = "digits/c4.gif"}
+            if(y == 5){document.getElementById("licznik").children[pozycja + 1].src = "digits/c5.gif"}
+            if(y == 6){document.getElementById("licznik").children[pozycja + 1].src = "digits/c6.gif"}
+            if(y == 7){document.getElementById("licznik").children[pozycja + 1].src = "digits/c7.gif"}
+            if(y == 8){document.getElementById("licznik").children[pozycja + 1].src = "digits/c8.gif"}
+            if(y == 9){document.getElementById("licznik").children[pozycja + 1].src = "digits/c9.gif"}
+
+            if(z == 0){document.getElementById("licznik").children[pozycja + 2].src = "digits/c0.gif"}
+            if(z == 1){document.getElementById("licznik").children[pozycja + 2].src = "digits/c1.gif"}
+            if(z == 2){document.getElementById("licznik").children[pozycja + 2].src = "digits/c2.gif"}
+            if(z == 3){document.getElementById("licznik").children[pozycja + 2].src = "digits/c3.gif"}
+            if(z == 4){document.getElementById("licznik").children[pozycja + 2].src = "digits/c4.gif"}
+            if(z == 5){document.getElementById("licznik").children[pozycja + 2].src = "digits/c5.gif"}
+            if(z == 6){document.getElementById("licznik").children[pozycja + 2].src = "digits/c6.gif"}
+            if(z == 7){document.getElementById("licznik").children[pozycja + 2].src = "digits/c7.gif"}
+            if(z == 8){document.getElementById("licznik").children[pozycja + 2].src = "digits/c8.gif"}
+            if(z == 9){document.getElementById("licznik").children[pozycja + 2].src = "digits/c9.gif"}
+        }else{
+            x = Math.floor(time/10)
+            y = time - x * 10
+            if(x == 0){document.getElementById("licznik").children[pozycja].src = "digits/c0.gif"}
+            if(x == 1){document.getElementById("licznik").children[pozycja].src = "digits/c1.gif"}
+            if(x == 2){document.getElementById("licznik").children[pozycja].src = "digits/c2.gif"}
+            if(x == 3){document.getElementById("licznik").children[pozycja].src = "digits/c3.gif"}
+            if(x == 4){document.getElementById("licznik").children[pozycja].src = "digits/c4.gif"}
+            if(x == 5){document.getElementById("licznik").children[pozycja].src = "digits/c5.gif"}
+            if(x == 6){document.getElementById("licznik").children[pozycja].src = "digits/c6.gif"}
+            if(x == 7){document.getElementById("licznik").children[pozycja].src = "digits/c7.gif"}
+            if(x == 8){document.getElementById("licznik").children[pozycja].src = "digits/c8.gif"}
+            if(x == 9){document.getElementById("licznik").children[pozycja].src = "digits/c9.gif"}
+
+            if(y == 0){document.getElementById("licznik").children[pozycja + 1].src = "digits/c0.gif"}
+            if(y == 1){document.getElementById("licznik").children[pozycja + 1].src = "digits/c1.gif"}
+            if(y == 2){document.getElementById("licznik").children[pozycja + 1].src = "digits/c2.gif"}
+            if(y == 3){document.getElementById("licznik").children[pozycja + 1].src = "digits/c3.gif"}
+            if(y == 4){document.getElementById("licznik").children[pozycja + 1].src = "digits/c4.gif"}
+            if(y == 5){document.getElementById("licznik").children[pozycja + 1].src = "digits/c5.gif"}
+            if(y == 6){document.getElementById("licznik").children[pozycja + 1].src = "digits/c6.gif"}
+            if(y == 7){document.getElementById("licznik").children[pozycja + 1].src = "digits/c7.gif"}
+            if(y == 8){document.getElementById("licznik").children[pozycja + 1].src = "digits/c8.gif"}
+            if(y == 9){document.getElementById("licznik").children[pozycja + 1].src = "digits/c9.gif"}
+        }
+    }
+    function ruch(id){
+        if(document.getElementById(id + 1) != null){
+            if(document.getElementById(id + 1).firstChild.style.opacity == 0){
+            j = document.getElementById(id).firstChild.src
+            t = document.getElementById(id).firstChild.style.top
+            l = document.getElementById(id).firstChild.style.left
+            o = document.getElementById(id).firstChild.style.opacity
+            document.getElementById(id).firstChild.style.opacity = document.getElementById(id + 1).firstChild.style.opacity
+            document.getElementById(id + 1).firstChild.src = j
+            document.getElementById(id + 1).firstChild.style.top = t
+            document.getElementById(id + 1).firstChild.style.left = l
+            document.getElementById(id + 1).firstChild.style.opacity = o;
+            }
+        }if(document.getElementById(id + 10) != null){
+            if(document.getElementById(id + 10).firstChild.style.opacity == 0){
+            j = document.getElementById(id).firstChild.src
+            t = document.getElementById(id).firstChild.style.top
+            l = document.getElementById(id).firstChild.style.left
+            o = document.getElementById(id).firstChild.style.opacity
+            document.getElementById(id).firstChild.style.opacity = document.getElementById(id + 10).firstChild.style.opacity
+            document.getElementById(id + 10).firstChild.src = j
+            document.getElementById(id + 10).firstChild.style.top = t
+            document.getElementById(id + 10).firstChild.style.left = l
+            document.getElementById(id + 10).firstChild.style.opacity = o;
+            }
+        }if(document.getElementById(id - 1) != null){
+            if(document.getElementById(id - 1).firstChild.style.opacity == 0){
+            j = document.getElementById(id).firstChild.src
+            t = document.getElementById(id).firstChild.style.top
+            l = document.getElementById(id).firstChild.style.left
+            o = document.getElementById(id).firstChild.style.opacity
+            document.getElementById(id).firstChild.style.opacity = document.getElementById(id - 1).firstChild.style.opacity
+            document.getElementById(id - 1).firstChild.src = j
+            document.getElementById(id - 1).firstChild.style.top = t
+            document.getElementById(id - 1).firstChild.style.left = l
+            document.getElementById(id - 1).firstChild.style.opacity = o;
+            }
+        }if(document.getElementById(id - 10) != null){
+            if(document.getElementById(id - 10).firstChild.style.opacity == 0){
+            j = document.getElementById(id).firstChild.src
+            t = document.getElementById(id).firstChild.style.top
+            l = document.getElementById(id).firstChild.style.left
+            o = document.getElementById(id).firstChild.style.opacity
+            document.getElementById(id).firstChild.style.opacity = document.getElementById(id - 10).firstChild.style.opacity
+            document.getElementById(id - 10).firstChild.src = j
+            document.getElementById(id - 10).firstChild.style.top = t
+            document.getElementById(id - 10).firstChild.style.left = l
+            document.getElementById(id - 10).firstChild.style.opacity = o;
+            }
+        }
+        check = 0;
+        for(i = 1; i <= n; i++){
+            for(j = 1; j <= n; j++){
+                if(document.getElementById(i*10 + j).firstChild.style.opacity == 0){
+                    check++;
+                }else if(document.getElementById(i*10 + j).firstChild.style.left == (600 / n) * (j - 1) * -1 + "px" && document.getElementById(i*10 + j).firstChild.style.top == (600 / n) * (i - 1) * -1 + "px"){
+                    check++;
+                }else{
+                    check--;
+                    break;
+                }
+            }
+        }
+        if(check == n ** 2){
+            // var hours = Math.floor((window.distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            // if(hours < 10){hours = "0" + hours}
+            // var minutes = Math.floor((window.distance % (1000 * 60 * 60)) / (1000 * 60));
+            // if(minutes < 10){minutes = "0" + minutes}
+            // var seconds = Math.floor((window.distance % (1000 * 60)) / 1000);
+            // if(seconds < 10){seconds = "0" + seconds}
+            // var mili = Math.floor((window.distance % 1000));
+            hours1 = document.getElementById("licznik").children[0].src.split("/")
+            hours1 = hours1[hours1.length - 1].charAt(1)
+            hours2 = document.getElementById("licznik").children[1].src.split("/")
+            hours2 = hours2[hours2.length - 1].charAt(1)
+            hours = hours1.toString() + hours2.toString()
+            min1 = document.getElementById("licznik").children[3].src.split("/")
+            min1 = min1[min1.length - 1].charAt(1)
+            min2 = document.getElementById("licznik").children[4].src.split("/")
+            min2 = min2[min2.length - 1].charAt(1)
+            minutes = min1.toString() + min2.toString()
+            sec1 = document.getElementById("licznik").children[6].src.split("/")
+            sec1 = sec1[sec1.length - 1].charAt(1)
+            sec2 = document.getElementById("licznik").children[7].src.split("/")
+            sec2 = sec2[sec2.length - 1].charAt(1)
+            seconds = sec1.toString() + sec2.toString()
+            mili1 = document.getElementById("licznik").children[9].src.split("/")
+            mili1 = mili1[mili1.length - 1].charAt(1)
+            mili2 = document.getElementById("licznik").children[10].src.split("/")
+            mili2 = mili2[mili2.length - 1].charAt(1)
+            mili3 = document.getElementById("licznik").children[11].src.split("/")
+            mili3 = mili3[mili3.length - 1].charAt(1)
+            mili = mili1.toString() + mili2.toString() + mili3.toString()
+            
+            window.petla = 0;
+            setTimeout(function() {
+                alert("You won! Your time: " + hours + ':' + minutes + ':' + seconds + "." + mili);
+                imie = prompt("Enter your name, your record will be saved in cookies!")
+                document.cookie = imie + " - " + hours + ":" + minutes + ":" + seconds + "." + mili;
+            },20)    
+        }
+    }
+    function getRandom(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+</script>
+</html>
